@@ -71,3 +71,20 @@ const postPorTitulo = async () => { // Definimos una función asíncrona llamada
         console.error(`Error al obtener el post por título -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
     }
 }
+
+const nombreTelefonoUsuario = async () => { // Definimos una función asíncrona llamada "nombreTelefonoUsuario".
+    try { // Iniciamos un bloque try para manejar posibles errores.
+        const usuarios = await mod.getUsuarios(url); // Obtenemos la lista de usuarios llamando a la función "getUsuarios" con la URL proporcionada.
+
+        return await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas se resuelvan.
+            usuarios.map(async usuario => { // Iteramos sobre cada usuario utilizando el método "map".
+                return { // Retornamos un nuevo objeto que contiene el nombre y el teléfono del usuario.
+                    nombre: usuario.name, // Asignamos el nombre del usuario.
+                    telefono: usuario.phone // Asignamos el teléfono del usuario.
+                };
+            })
+        );
+    } catch (error) { // Capturamos cualquier error que ocurra en el bloque try.
+        console.error(`Error al obtener el nombre y teléfono de los usuarios -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
+    }
+}
