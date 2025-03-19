@@ -1,0 +1,1 @@
+export { getCommentsByPostId } from "./listarByPostId.js"; // Exportamos la función "getCommentsByPostId" desde el archivo "listarByPostId.js" para que pueda ser utilizada en otros módulos.
