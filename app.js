@@ -88,3 +88,39 @@ const nombreTelefonoUsuario = async () => { // Definimos una función asíncrona
         console.error(`Error al obtener el nombre y teléfono de los usuarios -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
     }
 }
+
+const allDataUser = async () => { // Definimos una función asíncrona llamada "allDataUser".
+    try { // Iniciamos un bloque try para manejar posibles errores.
+        const usuarios = await mod.getUsuarios(url); // Obtenemos la lista de usuarios llamando a la función "getUsuarios" con la URL proporcionada.
+        
+        return await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas se resuelvan.
+            usuarios.map(async usuario => { // Iteramos sobre cada usuario utilizando el método "map".
+
+                const allPosts = await mod.getPostsByUserId(url, usuario.id); // Obtenemos todos los posts del usuario.
+
+                let postsConComentarios = await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas de posts se resuelvan.
+                    allPosts.map(async post => { // Iteramos sobre cada post.
+                        const commentsPost = await mod.getCommentsByPostId(url, post.id); // Obtenemos los comentarios del post.
+
+                        return { ...post, commentsPost }; // Retornamos un nuevo objeto que combina el post con sus comentarios.
+                    })
+                );
+
+                const allAlbums = await mod.getAlbumsByUserId(url, usuario.id); // Obtenemos todos los álbumes del usuario.
+
+                let albumsConFotos = await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas de álbumes se resuelvan.
+                    allAlbums.map(async album => { // Iteramos sobre cada álbum.
+                        const albumFotos = await mod.getPhotosByAlbumId(url, album.id); // Obtenemos las fotos del álbum.
+
+                        return { ...album, albumFotos }; // Retornamos un nuevo objeto que combina el álbum con sus fotos.
+                    })
+                );
+
+                // Devolvemos el usuario junto con sus posts y comentarios, y sus álbumes y fotos
+                return { ...usuario, postsConComentarios, albumsConFotos }; // Retornamos un nuevo objeto que combina el usuario con sus posts y álbumes.
+            })
+        );
+    } catch (error) { // Capturamos cualquier error que ocurra en el bloque try.
+        console.error(`Error al obtener todos los datos relacionados al usuario -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
+    }
+}
