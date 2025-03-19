@@ -1,0 +1,1 @@
+export { getTareasByUserIdStatus } from "./listarStatusById.js"; // Exportamos la función "getTareasByUserIdStatus" desde el archivo "listarStatusById.js" para que pueda ser utilizada en otros módulos.
