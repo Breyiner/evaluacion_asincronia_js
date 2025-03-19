@@ -1,0 +1,3 @@
+export { getPostsByUserId } from "./listarByUserId.js"; // Exportamos la función "getPostsByUserId" desde el archivo "listarByUserId.js" para que pueda ser utilizada en otros módulos.
+export { getPostsByTitle } from "./listarByTitle.js"; // Exportamos la función "getPostsByTitle" desde el archivo "listarByTitle.js" para que pueda ser utilizada en otros módulos.
+export { getPosts } from "./listar.js"; // Exportamos la función "getPosts" desde el archivo "listar.js" para que pueda ser utilizada en otros módulos.
