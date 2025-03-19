@@ -1,0 +1,1 @@
+export { getAlbumsByUserId } from "./listarByUserId.js"; // Exportamos la función "getAlbumsByUserId" desde el archivo "listarByUserId.js" para que pueda ser utilizada en otros módulos.
