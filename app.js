@@ -54,3 +54,20 @@ const usuariosPorUsername = async () => { // Definimos una función asíncrona l
         console.error(`Error al obtener los usuarios por nombre de usuario -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
     }
 }
+
+const postPorTitulo = async () => { // Definimos una función asíncrona llamada "postPorTitulo".
+    try { // Iniciamos un bloque try para manejar posibles errores.
+        let titulo = solicitarParametro("titulo del post"); // Llamamos a la función "solicitarParametro" para obtener el título del post del usuario.
+        const allPosts = await mod.getPostsByTitle(url, titulo); // Obtenemos todos los posts que coinciden con el título proporcionado.
+
+        return await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas se resuelvan.
+            allPosts.map(async post => { // Iteramos sobre cada post utilizando el método "map".
+                const comentarios = await mod.getCommentsByPostId(url, post.id); // Obtenemos los comentarios del post llamando a "getCommentsByPostId".
+
+                return { ...post, comentarios }; // Retornamos un nuevo objeto que combina el post con sus comentarios.
+            })
+        );
+    } catch (error) { // Capturamos cualquier error que ocurra en el bloque try.
+        console.error(`Error al obtener el post por título -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
+    }
+}
