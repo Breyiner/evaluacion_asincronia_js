@@ -30,3 +30,27 @@ const tareasPendientes = async () => { // Definimos una función asíncrona llam
         console.error(`Error al obtener las tareas pendientes -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
     }
 }
+
+const usuariosPorUsername = async () => { // Definimos una función asíncrona llamada "usuariosPorUsername".
+    try { // Iniciamos un bloque try para manejar posibles errores.
+        let username = solicitarParametro("username"); // Llamamos a la función "solicitarParametro" para obtener el nombre de usuario del usuario.
+        const usuarios = await mod.getUsersByUsername(url, username); // Obtenemos la lista de usuarios que coinciden con el nombre de usuario.
+
+        return await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas se resuelvan.
+            usuarios.map(async usuario => { // Iteramos sobre cada usuario utilizando el método "map".
+                const allAlbums = await mod.getAlbumsByUserId(url, usuario.id); // Obtenemos todos los álbumes del usuario.
+
+                let albumsConFotos = await Promise.all( // Utilizamos Promise.all para esperar a que todas las promesas de álbumes se resuelvan.
+                    allAlbums.map(async album => { // Iteramos sobre cada álbum.
+                        const albumFotos = await mod.getPhotosByAlbumId(url, album.id); // Obtenemos las fotos del álbum.
+
+                        return { ...album, albumFotos }; // Retornamos un nuevo objeto que combina el álbum con sus fotos.
+                    })
+                );
+                return { ...usuario, albumsConFotos }; // Retornamos un nuevo objeto que combina el usuario con sus álbumes que contienen fotos.
+            })
+        );
+    } catch (error) { // Capturamos cualquier error que ocurra en el bloque try.
+        console.error(`Error al obtener los usuarios por nombre de usuario -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
+    }
+}
