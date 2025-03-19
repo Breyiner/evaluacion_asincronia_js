@@ -124,3 +124,44 @@ const allDataUser = async () => { // Definimos una función asíncrona llamada "
         console.error(`Error al obtener todos los datos relacionados al usuario -> ${error}`); // Mostramos un mensaje de error en la consola con detalles del error.
     }
 }
+
+while (true) { // Iniciamos un bucle infinito que se ejecutará hasta que se rompa con un "break".
+    
+    do {
+        opcion = parseInt(prompt("Ingrese el número del ejercicio que desea ejecutar (1 - 5 ó 0 para salir):")) ?? ""; // Pedimos al usuario que ingrese un número de ejercicio y lo convertimos a un entero.
+    } while (Number.isNaN(opcion) || opcion > 5 || opcion < 0); // Continuamos pidiendo la opción mientras no sea un número válido (NaN) o esté fuera del rango permitido (0-5).
+    
+    if (opcion == 0) { // Si el usuario ingresa 0, finalizamos el programa.
+        alert("Programa finalizado con éxito."); // Mostramos un mensaje de éxito.
+        break; // Salimos del bucle.
+    } 
+
+    else { // Si la opción es válida (1-5), ejecutamos el ejercicio correspondiente.
+        console.log(`Ejercicio ${opcion}:`); // Mostramos en la consola el número del ejercicio que se va a ejecutar.
+        switch (opcion) { // Usamos un switch para determinar qué ejercicio ejecutar.
+            case 1:
+                await tareasPendientes().then(data => console.log(data)); // Llamamos a la función "tareasPendientes" y mostramos los datos en la consola.
+                break;
+        
+            case 2:
+                await usuariosPorUsername().then(data => data.length != 0 ?
+                    console.log(data) : console.log("No hay información relacionada") // Llamamos a "usuariosPorUsername" y mostramos los datos o un mensaje si no hay información.
+                );
+                break;
+        
+            case 3:
+                await postPorTitulo().then(data => data.length != 0 ?
+                    console.log(data) : console.log("No hay información relacionada") // Llamamos a "postPorTitulo" y mostramos los datos o un mensaje si no hay información.
+                );
+                break;
+        
+            case 4:
+                await nombreTelefonoUsuario().then(data => console.log(data)); // Llamamos a "nombreTelefonoUsuario" y mostramos los datos en la consola.
+                break;
+        
+            case 5:
+                await allDataUser().then(data => console.log(data)); // Llamamos a "allDataUser" y mostramos los datos en la consola.
+                break;
+        }
+    }
+}
